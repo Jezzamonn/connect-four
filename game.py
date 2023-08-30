@@ -1,7 +1,8 @@
 import pygame
 from jezimpl.jezboard import JezBoard
-from jezimpl.jezaiplayer import JezAIPlayer
+from jezimpl.jezaiplayer import JezAIPlayer1, JezAIPlayer2
 from board import Piece, num_cols, num_rows
+import random
 
 
 pygame.init()
@@ -9,11 +10,21 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
+player1_piece = Piece.RED
+player2_piece = Piece.YELLOW
+player_classes = [JezAIPlayer1, JezAIPlayer2]
+
 def create_new_game():
     global board, player1, player2, next_player
+    # TODO: Replace the board with the real implementation.
     board = JezBoard()
-    player1 = JezAIPlayer(Piece.RED)
-    player2 = JezAIPlayer(Piece.YELLOW)
+
+    player1_class = random.choice(player_classes)
+    player1 = player1_class(player1_piece)
+
+    player2_class = random.choice(player_classes)
+    player2 = player2_class(player2_piece)
+
     next_player = player1
 
 create_new_game()
@@ -98,7 +109,10 @@ def draw_board(board):
         else:
             text = "It's a tie!"
     else:
-        text = f"Next player: {next_player}"
+        player_piece = player1_piece if next_player == player1 else player2_piece
+        # Class name of the player
+        player_name = next_player.__class__.__name__
+        text = f"Next player: {player_piece.name} ({player_name})"
 
     font = pygame.font.SysFont('Arial', 30)
     text_surface = font.render(text, True, text_color)
