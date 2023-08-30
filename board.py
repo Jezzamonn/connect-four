@@ -32,6 +32,5 @@ class Board:
 
         After this, the current piece will be switched to the other player.
 
-        If the move is invalid, the player forfeits their turn, so the board
-        stays the same but the current player will swap."""
+        If the move is invalid, that player immediately loses."""
         pass

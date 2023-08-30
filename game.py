@@ -1,8 +1,9 @@
 import pygame
 from jezimpl.jezboard import JezBoard
-from jezimpl.jezaiplayer import JezAIPlayer1, JezAIPlayer2
+from jezimpl.jezaiplayer import *
 from board import Piece, num_cols, num_rows
 import random
+import trueskill
 
 
 pygame.init()
@@ -12,7 +13,9 @@ running = True
 
 player1_piece = Piece.RED
 player2_piece = Piece.YELLOW
-player_classes = [JezAIPlayer1, JezAIPlayer2]
+player_classes = [JezAIPlayerRandom, JezAIPlayerFirstCol, JezAIPlayerInvalid]
+
+player_ratings = {c: trueskill.Rating() for c in player_classes}
 
 def create_new_game():
     global board, player1, player2, next_player
@@ -45,10 +48,35 @@ def simulate_turn():
     global next_player
     next_move = next_player.get_next_move(board)
     board.insert_piece(next_move)
+
+    if board.is_gameover():
+        update_ratings()
+
     if next_player == player1:
         next_player = player2
     else:
         next_player = player1
+
+def update_ratings():
+    if type(player1) is type(player2):
+        return
+
+    winning_piece = board.get_winner()
+    player1_won = winning_piece == player1_piece
+    player2_won = winning_piece == player2_piece
+
+    old_player1_rating = player_ratings[type(player1)]
+    old_player2_rating = player_ratings[type(player2)]
+
+    if player1_won:
+        new_player1_rating, new_player2_rating = trueskill.rate_1vs1(old_player1_rating, old_player2_rating)
+    elif player2_won:
+        new_player2_rating, new_player1_rating = trueskill.rate_1vs1(old_player2_rating, old_player1_rating)
+    else:
+        new_player1_rating, new_player2_rating = trueskill.rate_1vs1(old_player1_rating, old_player2_rating, drawn=True)
+
+    player_ratings[type(player1)] = new_player1_rating
+    player_ratings[type(player2)] = new_player2_rating
 
 def draw_board(board):
     piece_size = 80
@@ -111,12 +139,26 @@ def draw_board(board):
     else:
         player_piece = player1_piece if next_player == player1 else player2_piece
         # Class name of the player
-        player_name = next_player.__class__.__name__
+        player_name = type(next_player).__name__
         text = f"Next player: {player_piece.name} ({player_name})"
 
     font = pygame.font.SysFont('Arial', 30)
     text_surface = font.render(text, True, text_color)
     screen.blit(text_surface, (0, 0))
+
+    # Draw the ratings
+    font = pygame.font.SysFont('Arial', 15)
+    text = "Ratings:"
+    text_surface = font.render(text, True, text_color)
+    screen.blit(text_surface, (0, 40))
+
+    # Loop through the ratings in order of highest to lowest
+    sorted_ratings = sorted(player_ratings.items(), key=lambda x: x[1], reverse=True)
+    for i, (player_class, rating) in enumerate(sorted_ratings):
+        text = f"{player_class.__name__}: {rating.mu:.2f} ± {rating.sigma:.2f}"
+        text_surface = font.render(text, True, text_color)
+        screen.blit(text_surface, (0, 60 + 20 * i))
+
 
 
 while running:
