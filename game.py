@@ -1,7 +1,7 @@
 import pygame
 from jezimpl.jezboard import JezBoard
 from jezimpl.jezaiplayer import *
-from board import Piece, num_cols, num_rows
+from board import Piece, ReadOnlyBoard, num_cols, num_rows
 import random
 import trueskill
 
@@ -18,9 +18,10 @@ player_classes = [JezAIPlayerRandom, JezAIPlayerFirstCol, JezAIPlayerInvalid]
 player_ratings = {c: trueskill.Rating() for c in player_classes}
 
 def create_new_game():
-    global board, player1, player2, next_player
+    global board, read_only_board, player1, player2, next_player
     # TODO: Replace the board with the real implementation.
     board = JezBoard()
+    read_only_board = ReadOnlyBoard(board)
 
     player1_class = random.choice(player_classes)
     player1 = player1_class(player1_piece)
@@ -46,7 +47,7 @@ def simulate_turn():
         return
 
     global next_player
-    next_move = next_player.get_next_move(board)
+    next_move = next_player.get_next_move(read_only_board)
     board.insert_piece(next_move)
 
     if board.is_gameover():

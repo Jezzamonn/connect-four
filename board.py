@@ -34,3 +34,12 @@ class Board:
 
         If the move is invalid, that player immediately loses."""
         pass
+
+class ReadOnlyBoard:
+    """A read-only wrapper around a Board, given to players so they can't cheat by using methods they shouldn't."""
+
+    def __init__(self, board):
+        self._board = board
+
+    def get_piece(self, x, y):
+        return self._board.get_piece(x, y)
