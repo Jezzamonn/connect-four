@@ -169,13 +169,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    turbo_mode = pygame.key.get_pressed()[pygame.K_SPACE]
+
     if time_until_next_turn <= 0:
         simulate_turn()
         draw_board(board)
         if board.is_gameover():
-            time_until_next_turn = 3
+            time_until_next_turn = 0 if turbo_mode else 3
         else:
-            time_until_next_turn = 0.5
+            time_until_next_turn = 0 if turbo_mode else 0.5
 
 
     # flip() the display to put your work on screen
