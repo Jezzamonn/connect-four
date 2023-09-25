@@ -1,7 +1,7 @@
-from board import Board, Piece
+from board import BoardInterface, Piece
 import random
 
-class JezBoard(Board):
+class JezBoard(BoardInterface):
 
     def __init__(self):
         self.winner = None

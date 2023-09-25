@@ -13,13 +13,14 @@ running = True
 
 player1_piece = Piece.RED
 player2_piece = Piece.YELLOW
+# TODO for Part 2: Add your new AI player here.
 player_classes = [JezAIPlayerRandom, JezAIPlayerFirstCol, JezAIPlayerInvalid]
 
 player_ratings = {c: trueskill.Rating() for c in player_classes}
 
 def create_new_game():
     global board, read_only_board, player1, player2, next_player
-    # TODO: Replace the board with the real implementation.
+    # TODO for Part 1: Replace the board with the real implementation.
     board = JezBoard()
     read_only_board = ReadOnlyBoard(board)
 

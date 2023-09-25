@@ -8,7 +8,7 @@ class Piece(Enum):
 num_rows = 6
 num_cols = 7
 
-class Board:
+class BoardInterface:
     """Interface for a connect four board."""
 
     def current_player(self):
@@ -35,8 +35,11 @@ class Board:
         If the move is invalid, that player immediately loses."""
         pass
 
+
 class ReadOnlyBoard:
-    """A read-only wrapper around a Board, given to players so they can't cheat by using methods they shouldn't."""
+    """A read-only wrapper around a Board, given to players so they can't cheat by using methods they shouldn't.
+
+    You don't need to modify this, it's already complete. :)"""
 
     def __init__(self, board):
         self._board = board

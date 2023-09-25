@@ -1,4 +1,4 @@
-class AIPlayer:
+class AIPlayerInterface:
     """Interface for an AI player."""
 
     def __init__(self, piece):
