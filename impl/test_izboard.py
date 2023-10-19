@@ -131,11 +131,11 @@ class TestIzBoard(unittest.TestCase):
             board.insert_piece(0)
 
         player = board.current_player()
-        other_player = other_player(player)
+        other = other_player(player)
         board.insert_piece(0)
 
         self.assertTrue(board.is_gameover())
-        self.assertTrue(board.get_winner(), other_player)
+        self.assertTrue(board.get_winner(), other)
 
     def test_insert_piece_win_by_column(self):
         board = IzBoard()

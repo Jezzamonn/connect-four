@@ -28,6 +28,18 @@ For the first part of the assignment, you need to create the logic for the board
 
 Each method has comments explaining what it should do in [board.py](board.py).
 
+## Assignment Part 1 Tests
+
+There are tests for the board! To see them, run the following from the same directory that `game.py` is in:
+
+```
+python3 -m unittest
+```
+
+When you run it to begin with you should see `FAILED (failures=13)`. As you complete the implementation, those tests should start passing!
+
+## Seeing your board in the game
+
 When you've successfully implemented the board, modify the code in [game.py](game.py) to initialize the board to `IzBoard()` instead of `JezBoard()`. There's a TODO comment to help you know where to update the code. You'll also need to update the imports at the top of the file to import `IzBoard` too.
 
 Now when you run the game, you should see the players place moves on the board, and see the rankings of the existing AI players compared to each other. Some AI players should be pretty clearly better than others.
