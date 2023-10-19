@@ -14,7 +14,7 @@ This depends on a small number of third-party libraries, which are listed in [re
 1. Unzip the Downloaded code.
 2. Open a terminal, and change directory into the unzip'd folder.
   - On Mac, you can do this by typing `cd ` ('c' 'd' space) and then dragging the folder from the finder into the terminal window. After dragging the file, the command should look like `jez@Jezs-MacBook ~ % cd /Users/jez/Downloads/connect-four-main`.
-3. Run `python3 -m pip -r requirements.txt`.
+3. Run `python3 -m pip install -r requirements.txt`.
 
 # Running the game
 
