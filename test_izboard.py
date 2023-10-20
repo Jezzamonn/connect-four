@@ -72,7 +72,7 @@ class TestIzBoard(unittest.TestCase):
 
         board.insert_piece(0)
 
-        self.assertEqual(board.get_piece(0, 6), player)
+        self.assertEqual(board.get_piece(0, 5), player)
 
     def test_insert_piece_get_piece_two_pieces_returns_correct_piece(self):
         board = IzBoard()
@@ -81,7 +81,7 @@ class TestIzBoard(unittest.TestCase):
         board.insert_piece(0)
         board.insert_piece(1)
 
-        self.assertEqual(board.get_piece(0, 6), player)
+        self.assertEqual(board.get_piece(0, 5), player)
 
     def test_insert_piece_get_piece_full_row_returns_correct_pieces(self):
         board = IzBoard()
@@ -266,9 +266,24 @@ class TestIzBoard(unittest.TestCase):
         # R Y R Y R Y Y
         # R Y R Y R Y R
 
-        for row in range(6):
-            for col in range(6):
+        for col in range(0, 6, 2):
+            # Do the first part that's shaped like this:
+            #
+            # R Y
+            # R Y
+            # R Y
+            for _ in range(3):
                 board.insert_piece(col)
+                board.insert_piece(col + 1)
+            # Do the second part that's shaped like this:
+            #
+            # Y R
+            # Y R
+            # Y R
+            for _ in range(3):
+                board.insert_piece(col + 1)
+                board.insert_piece(col)
+        # Now do the final column
         for row in range(6):
             board.insert_piece(6)
 
